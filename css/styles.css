@@ -1,14 +1,14 @@
 @charset "utf-8";
 /* CSS Document */
 
-body,td,th,p{
-	font-family: Arial, Helvetica, sans-serif;
+body,td,th,p {
+	font-family: "Helvetica Neue", Verdana, Tahoma, "Microsoft YaHei", sans-serif;
 	font-size: 10pt;
 	color: #333;
 	line-height: 1.5;
 }
 body {
-	background-color: #fdfdfd;
+  background-color: #fdfdfd;
 	margin: 0;
 	position:relative;
 }
@@ -35,6 +35,7 @@ h1, h2, h3, h4, h5, h6 {
 article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
 	display: block;
 }
+figure {margin: 0;}
 #maincontent {
   background-color: #f3f3f3;
   min-height: 100%;
@@ -45,11 +46,13 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
   font-size: 8pt;
   letter-spacing: 1px;
   padding: 25px;
+  box-sizing: border-box;
   text-align: center;
   text-transform: uppercase;
 }
 /* ====================== Navigation ====================== */
 nav {
+  display: flex;
   width: 100%;
   height: 80px;
   background-color: #252831;
@@ -66,36 +69,41 @@ nav h1 a {
   text-transform: uppercase;
 }
 #breadcrumb {
-    padding: 10px 40px 16px;
-    list-style: none;
-    background-color: #eee;
-    font-size: 17px;
-    margin: 0;
-    width: calc(50% - 80px);
+  padding: 10px 40px 16px;
+  list-style: none;
+  background-color: #eee;
+  font-size: 17px;
+  margin: 0;
+  width: calc(50% - 80px);
+
+  /* 溢出处理 */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* Display list items side by side */
 #breadcrumb li {
-    display: inline;
+  display: inline;
 }
 
 /* Add a slash symbol (/) before/behind each list item */
 #breadcrumb li+li:before {
-    padding: 8px;
-    color: black;
-    content: "/\00a0";
+  padding: 8px;
+  color: black;
+  content: "/\00a0";
 }
 
 /* Add a color to all links inside the list */
 #breadcrumb li a {
-    color: #0275d8;
-    text-decoration: none;
+  color: #0275d8;
+  text-decoration: none;
 }
 
 /* Add a color on mouse-over */
 #breadcrumb li a:hover {
-    color: #01447e;
-    text-decoration: underline;
+  color: #01447e;
+  text-decoration: underline;
 }
 /* ====================== Map ====================== */
 #map {
@@ -105,8 +113,9 @@ nav h1 a {
 }
 /* ====================== Restaurant Filtering ====================== */
 .filter-options {
-  width: 100%;
+  display: flex;
   height: 50px;
+  /* padding: 0 20px; */
   background-color: #3397DB;
   align-items: center;
 }
@@ -131,6 +140,10 @@ nav h1 a {
 
 /* ====================== Restaurant Listing ====================== */
 #restaurants-list {
+  /* 实现卡片布局 */
+  display: flex;
+  flex-wrap: wrap;
+
   background-color: #f3f3f3;
   list-style: outside none none;
   margin: 0;
@@ -145,17 +158,24 @@ nav h1 a {
   min-height: 380px;
   padding: 0 30px 25px;
   text-align: left;
-  width: 270px;
+  /* width: 270px; */
+  overflow: hidden;
+  box-sizing: border-box;
+  border-radius: 25px 0;
 }
 #restaurants-list .restaurant-img {
   background-color: #ccc;
   display: block;
   margin: 0;
-  max-width: 100%;
+
+  /* 图片占满父容器宽度 */
+  margin-left: -30px;
+  max-width: calc(100% + 30px * 2);
+
   min-height: 248px;
-  min-width: 100%;
+  min-width: 100%;  
 }
-#restaurants-list li h1 {
+#restaurants-list figcaption {
   color: #f18200;
   font-family: Arial,sans-serif;
   font-size: 14pt;
@@ -183,26 +203,26 @@ nav h1 a {
 }
 
 /* ====================== Restaurant Details ====================== */
-.inside header {
+.inside > header {
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 1000;
+  z-index: 1001;  /* leaf map 的 z-index 是 1000 */
 }
 .inside #map-container {
   background: blue none repeat scroll 0 0;
-  height: 87%;
+  height: calc(100% - 80px);  /* 占满剩余高度：视窗高度减去 header 高度 */
   position: fixed;
   right: 0;
   top: 80px;
-  width: 50%;
+  width: 50%;  
 }
 .inside #map {
   background-color: #ccc;
   height: 100%;
   width: 100%;
 }
-.inside #footer {
+.inside > #footer {
   bottom: 0;
   position: absolute;
   width: 50%;
@@ -218,11 +238,14 @@ nav h1 a {
   line-height: 1.1;
 }
 #restaurant-img {
-	width: 90%;
+  /* 图片块级化，与容器等宽 */
+  display: block;
+  width: 100%;
+  border-top-left-radius: 25px;
 }
 #restaurant-address {
   font-size: 12pt;
-  margin: 10px 0px;
+  margin: 10px 0;
 }
 #restaurant-cuisine {
   background-color: #333;
@@ -234,13 +257,14 @@ nav h1 a {
   padding: 2px 0;
   text-align: center;
   text-transform: uppercase;
-	width: 90%;
+  border-bottom-right-radius: 25px;
 }
 #restaurant-container, #reviews-container {
   border-bottom: 1px solid #d9d9d9;
   border-top: 1px solid #fff;
   padding: 140px 40px 30px;
   width: 50%;
+  box-sizing: border-box;
 }
 #reviews-container {
   padding: 30px 40px 80px;
@@ -256,20 +280,118 @@ nav h1 a {
   margin: 0;
   padding: 0;
 }
-#reviews-list li {
+#reviews-list > article {
   background-color: #fff;
-    border: 2px solid #f3f3f3;
+  border: 2px solid #f3f3f3;
+  border-radius: 25px 0;
   display: block;
   list-style-type: none;
   margin: 0 0 30px;
   overflow: hidden;
-  padding: 0 20px 20px;
-  position: relative;
-  width: 85%;
+  padding: 0 20px 15px;
+  position: relative;  
 }
-#reviews-list li p {
+#reviews-list header {
+  padding: 15px 20px;
+  margin: 0 -20px 15px;
+  line-height: 1;
+  font-size: 14px;
+  color: #ccc;
+  background-color: #333;
+}
+#reviews-list header > b {
+  font-size: 16px;
+  font-weight: 400;
+  color: #fff;
+}
+#reviews-list header > time {
+  float: right;
+  text-shadow: 0 2px 0 #000;
+}
+#reviews-list > article p {
   margin: 0 0 10px;
 }
+#reviews-list .rating {
+  display: inline-block;
+  padding: .5em 1em;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  color: white;
+  background: #ffa500;
+  border-radius: 4px;
+}
+
 #restaurant-hours td {
   color: #666;
+}
+
+/* mobile */
+@media screen and (min-width: 420px) {
+  #restaurants-list li {width: 100%;}  /* 显示1列 */
+}
+
+/* sm screen */
+@media screen and (min-width: 640px) {
+  #restaurants-list li {width: calc(100% / 2 - 15px * 2);}  /* 显示2列，15px 是 margin 值，下同 */
+}
+
+/* iPad / desktop */
+@media screen and (min-width: 950px) {
+  #restaurants-list li {width: calc(100% / 3 - 15px * 2);}  /* 显示3列 */
+}
+
+/* wide screen */
+@media screen and (min-width: 1260px) {
+  #restaurants-list li {width: calc(100% / 4 - 15px * 2);}  /* 显示4列 */
+}
+
+/* wide HD screen */
+@media screen and (min-width: 1560px) {
+  #restaurants-list li {width: calc(100% / 5 - 15px * 2);}  /* 显示5列 */
+}
+
+/* full HD screen and larger */
+@media screen and (min-width: 1900px) {
+  #restaurants-list li {width: calc(100% / 6 - 15px * 2);}  /* 显示6列 */
+}
+
+/** 视窗宽度小于 750px 特殊处理：
+    1.将某些 UI 组件独占一行，防止宽度不足挤压变形、重叠
+    2.缩减布局容器的一半 padding 值，充分利用显示空间
+  */
+@media screen and (max-width: 750px) {
+  #breadcrumb {
+    padding: 5px 20px 8px;
+    width: 100%;
+  }
+
+  .filter-options {
+    height: auto;
+    flex-direction: column;  /* 纵向排列 */
+    padding: 10px 20px;
+  }
+  .filter-options select {width: calc(100% - 10px);}
+
+  #restaurant-container,
+  #reviews-container,
+  .inside #map-container,
+  .inside > #footer {width: 100%;}
+
+  #restaurant-container {padding: 140px 20px 15px;}
+  #reviews-container {padding: 15px 20px 80px;}
+
+  .inside #map-container {
+    position: relative;
+    top: 118px;
+    height: 60vh;
+  }
+
+  #restaurants-list {padding: 15px 10px 30px;}  /* 10px = 15px(padding) / 2 + 2px(border) */
+  #restaurants-list li {padding: 0 15px 15px;}
+  #restaurants-list li a {display: block;}  /* 按钮占满容器宽度 */
+}
+
+/* 视窗高度不足 800px 特殊处理 */
+@media screen and (max-height: 800px) {
+  #map {height: 40vh;}
 }
